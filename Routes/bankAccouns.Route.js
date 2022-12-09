@@ -13,7 +13,6 @@ export const accountRoute = Router();
 accountRoute.get("/:id", getAccountById); //√
 accountRoute.post("", createAcount); //√
 accountRoute.delete("", deleteAccount); //√
-// accountRoute.put("/",) //√
 accountRoute.put("", (req, res) => {
    switch (req.body.type) {
       case "withdraw":
