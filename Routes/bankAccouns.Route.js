@@ -4,11 +4,16 @@ import {
    createAcount,
    withdrawFromAccount,
    depositAccount,
+   transfer,
+   deleteAccount,
+   updateCredit,
 } from "../controller/accountsUtils.js";
 export const accountRoute = Router();
 
 accountRoute.get("/:id", getAccountById); //√
 accountRoute.post("", createAcount); //√
+accountRoute.delete("", deleteAccount); //√
+// accountRoute.put("/",) //√
 accountRoute.put("", (req, res) => {
    switch (req.body.type) {
       case "withdraw":
@@ -18,14 +23,15 @@ accountRoute.put("", (req, res) => {
          depositAccount(req, res);
          break;
       case "transfer":
-         transfer(depositAccount(req, res), withdrawFromAccount(req, res));
+         transfer(req, res);
+         break;
+      case "credit":
+         updateCredit(req, res);
+         break;
       default:
          res.send(
-            "What Action (type) Would You Like To Take (withdraw, deposit, transfer)"
+            "What Action (type) Would You Like To Take (withdraw, deposit, transfer,credit)"
          );
          break;
    }
-});
-// accountRoute.put("",) //account withdraw / deposit } transfer
-// accountRoute.patch("",createAcount2)//create new account and push to user
-accountRoute.delete("");
+}); //√

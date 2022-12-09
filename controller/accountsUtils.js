@@ -68,11 +68,7 @@ const withdrawFromAccount = (req, res) => {
                : res.send("Not Enough credit");
          }
       });
-      res.status(200).send(
-         foundAccount.cash < 0
-            ? `You Owe me MONEY ${-foundAccount.cash}$!`
-            : `Your Balance is: ${foundAccount.cash}`
-      );
+      res.status(200).send(foundAccount);
    } else if (req.body.amount < 0) {
       res.send("Amount must be positive integer!");
    } else {
@@ -104,6 +100,80 @@ const depositAccount = (req, res) => {
    }
 };
 
+const transfer = (req, res) => {
+   const accounts = loadData(dbAccountsPath);
+   const idFrom = req.body.fromAccount;
+   const idTo = req.body.toAccount;
+   const amount = req.body.amount;
+   let bobo;
+   let sender = accounts.find((account) => account.id === idFrom);
+   let getter = accounts.find((account) => account.id === idTo);
+   if (!sender || !getter) {
+      if (!sender && getter) {
+         return res
+            .status(400)
+            .send(`Bad Request: "from" wrong id ,with id: ${idFrom}`);
+      } else if (!getter && sender) {
+         return res
+            .status(400)
+            .send(`Bad Request: "to" wrong id ,with id: ${idTo}`);
+      } else {
+         res.status(404).send("Accounts IDs' not Found!");
+      }
+   }
+   accounts.forEach((account) => {
+      if (account.id === req.body.fromAccount) {
+         withdraw(account, amount) ? null : (bobo = true);
+      } else if (account.id === req.body.toAccount) {
+         if (!bobo) {
+            deposit(account, amount);
+         }
+      }
+   });
+   if (bobo) {
+      return res
+         .status(200)
+         .send(`Sender account doesn't have enough cash to transfer `);
+   }
+   saveData(dbAccountsPath, accounts);
+   return res.status(200).send("Transfer has been made successfully");
+};
+
+const deleteAccount = (req, res) => {
+   const accounts = loadData(dbAccountsPath);
+   const foundAccount = accounts.find(
+      (account) => account.id === req.body.accountId
+   );
+   if (!foundAccount) {
+      return res
+         .status(404)
+         .send(`Account  not found with id: ${req.body.accountId}`);
+   }
+
+   const filteredAccounts = accounts.filter(
+      (account) => account.id !== req.body.accountId
+   );
+   saveData(dbAccountsPath, filteredAccounts);
+   return res.status(200).send(foundAccount);
+};
+
+const updateCredit = (req, res) => {
+   const accounts = loadData(dbAccountsPath);
+   const amount = req.body.credit;
+   const accountId = req.body.accountId;
+   const foundAccount = accounts.find((account) => account.id === accountId);
+   if (foundAccount) {
+      accounts.forEach((account) => {
+         if (account.id === accountId) {
+            account.credit = amount;
+         }
+      });
+      saveData(dbAccountsPath, accounts);
+      return res.status(200).send(foundAccount);
+   }
+   return res.status(404).send("Account id not found");
+};
+
 const withdraw = (acc, amount) => {
    const {credit, cash} = acc;
    return cash + credit >= amount ? (acc.cash = cash - amount) : false;
@@ -114,4 +184,12 @@ const deposit = (acc, amount) => {
    return acc ? (acc.cash = cash + amount) : false;
 };
 
-export {getAccountById, createAcount, withdrawFromAccount, depositAccount};
+export {
+   getAccountById,
+   createAcount,
+   withdrawFromAccount,
+   depositAccount,
+   transfer,
+   deleteAccount,
+   updateCredit,
+};

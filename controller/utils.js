@@ -1,4 +1,3 @@
-import {v4 as uuidv4} from "uuid";
 import path from "path";
 import chalk from "chalk";
 import {writeFileSync, readFileSync} from "fs";
@@ -16,7 +15,6 @@ const paths = () => {
       path.dirname(__controllersdirname),
       "/db/accounts.json"
    );
-
    return {dbUsersPath, dbAccountsPath, __controllersdirname};
 };
 
@@ -27,7 +25,7 @@ const loadData = (path) => {
       return JSON.parse(data);
    } catch (error) {
       console.log(error);
-      return []; //maybe message to user?
+      return [];
    }
 };
 
@@ -37,12 +35,4 @@ const saveData = (path, data) => {
    return console.log(chalk.bgMagenta("Saved!"));
 };
 
-const {dbUsersPath, dbAccountsPath} = paths();
-
-// const dataa = [{id:"fcd91c75-c746-4eb7-b998-48161e5e3bfb",credit:1000,cash:50}]
-// saveData(dbAccountsPath,dataa);
-//----------------------------------------------------------------------------------------------!!!!!!!!!!
-
 export {loadData, saveData, paths};
-
-//writeHead({Content-Type:text/html})

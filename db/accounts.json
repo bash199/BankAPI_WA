@@ -1,9 +1,9 @@
 [
-   {"id": "fcd91c75-c746-4eb7-b998-48161e5e3bfb", "credit": 1000, "cash": -997},
-   {"id": "4a88c33a-8691-411a-9f5f-73d5f9494dfe", "cash": 0, "credit": 0},
-   {"id": "7a5ca673-65ca-4f1d-9470-956e41b07f10", "cash": 0, "credit": 0},
-   {"id": "e7afaf42-7ea8-4e44-b994-3260acc79e63", "cash": 0, "credit": 0},
-   {"id": "bc9bebc5-f65d-4f9f-bc0e-1953102a84b2", "cash": 0, "credit": 0},
-   {"id": "26383689-946d-41e7-8304-99131aa1df08", "cash": 5000, "credit": 0},
-   {"id": "aa729d53-9359-4a8a-831c-02ed6905ad26", "cash": 5300, "credit": 0}
+   {
+      "id": "fcd91c75-c746-4eb7-b998-48161e5e3bfb",
+      "credit": 1000,
+      "cash": 15000
+   },
+   {"id": "bc9bebc5-f65d-4f9f-bc0e-1953102a84b2", "cash": 8900, "credit": 5000},
+   {"id": "b8a3ba1e-3f84-4760-ba5c-b0bb772b47a3", "cash": 39510, "credit": 2500}
 ]

@@ -14,7 +14,7 @@ const getUser = (req, res) => {
    try {
       const data = loadData(dbUsersPath);
       const user = data.find((user) => user.id === req.params.id);
-      if (user) res.status(200).send(user);
+      if (user) return res.status(200).send(user);
       res.status(404).send(`User Not Found With Id: "${req.params.id}"`);
    } catch (error) {
       res.status(404).send(error);
@@ -28,6 +28,7 @@ const createUser = (req, res) => {
    if (req.body.name && req.body.lastName) {
       res.status(201).send(user);
       saveData(dbUsersPath, users);
+      return
    }
    res.status(404).send(
       "No User was created, please fill in the Body (raw) the necessary Fields,(name & lastName) "
@@ -35,11 +36,3 @@ const createUser = (req, res) => {
 };
 
 export {getAllUsers, getUser, createUser};
-
-// `{
-//    userid:BashirEvron //req.body.userid
-//    id:1234
-//    cash:1000
-//    credit:100
-//    accounts:[12332,asd233]
-// }`
