@@ -154,11 +154,11 @@ const deleteAccount = (req, res) => {
    const filteredAccounts = accounts.filter(
       (account) => account.id !== req.body.accountId
    );
-   const filteredUsersAccounts = users.forEach((user) => {
+   users.forEach((user) => {
       user.accounts = user.accounts.filter((acc) => acc !== req.body.accountId);
    });
    saveData(dbAccountsPath, filteredAccounts);
-   saveData(dbUsersPath, filteredUsersAccounts);
+   saveData(dbUsersPath, users);
    return res.status(200).send(foundAccount);
 };
 
