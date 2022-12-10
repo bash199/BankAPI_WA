@@ -141,6 +141,7 @@ const transfer = (req, res) => {
 
 const deleteAccount = (req, res) => {
    const accounts = loadData(dbAccountsPath);
+   const users = loadData(dbUsersPath);
    const foundAccount = accounts.find(
       (account) => account.id === req.body.accountId
    );
@@ -153,7 +154,11 @@ const deleteAccount = (req, res) => {
    const filteredAccounts = accounts.filter(
       (account) => account.id !== req.body.accountId
    );
+   const filteredUsersAccounts = users.forEach((user) => {
+      user.accounts = user.accounts.filter((acc) => acc !== req.body.accountId);
+   });
    saveData(dbAccountsPath, filteredAccounts);
+   saveData(dbUsersPath, filteredUsersAccounts);
    return res.status(200).send(foundAccount);
 };
 
