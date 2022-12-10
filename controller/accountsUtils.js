@@ -17,9 +17,11 @@ const getAccountById = (req, res) => {
 
 const createAcount = (req, res) => {
    if (!req.body.accountOwner) {
-      res.status(404).send(
-         "No Account was created, please fill in the Body (raw) the necessary Fields,(accountOwner)"
-      );
+      return res
+         .status(404)
+         .send(
+            "No Account was created, please fill in the Body (raw) the necessary Fields,(accountOwner)"
+         );
    }
    const data = loadData(dbAccountsPath);
    const users = loadData(dbUsersPath);
@@ -31,15 +33,13 @@ const createAcount = (req, res) => {
    const accounts = [...data, account];
    const found = users.some((user) => user.id === req.body.accountOwner);
    if (!found) {
-      res.status(404).send(
-         `error: no User found with id: ${req.body.accountOwner}`
-      );
+      return res
+         .status(404)
+         .send(`error: no User found with id: ${req.body.accountOwner}`);
    }
    users.forEach((user) => {
       if (user.id === req.body.accountOwner) {
          user.accounts.push(account.id);
-      } else {
-         user.accounts = [];
       }
    });
    saveData(dbAccountsPath, accounts);
